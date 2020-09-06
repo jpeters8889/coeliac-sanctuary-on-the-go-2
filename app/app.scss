@@ -1,0 +1,34 @@
+// Global SCSS styling
+// @see https://docs.nativescript.org/ui/styling
+
+@font-face {
+  font-family: 'Font Awesome Solid';
+  src: url('./fonts/fa-solid-900.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Font Awesome Regular';
+  src: url('./fonts/fa-regular-400.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Font Awesome Brands';
+  src: url('./fonts/fa-brands-400.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.far {
+  font-family: 'Font Awesome Regular', 'fa-regular-400';
+}
+
+.fas {
+  font-family: 'Font Awesome Solid', 'fa-solid-900';
+}
+.fab {
+  font-family: 'Font Awesome Brands', 'fa-brands-400';
+}
