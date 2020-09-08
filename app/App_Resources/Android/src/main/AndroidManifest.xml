@@ -34,6 +34,10 @@
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
+
 		<activity android:name="com.tns.ErrorReportActivity"/>
+
+		<meta-data android:name="com.google.android.geo.API_KEY" android:value="@string/nativescript_google_maps_api_key" />
+
 	</application>
 </manifest>

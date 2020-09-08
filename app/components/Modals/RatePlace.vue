@@ -76,8 +76,8 @@ export default {
           position: nstoasts.POSITION.CENTER,
         });
 
-        this.$modal.close();
-      }).catch(() => {
+        // this.$modal.close();
+      }).catch((err) => {
         nstoasts.show({
           text: 'Sorry, there was a problem submitting your review and rating.',
           position: nstoasts.POSITION.CENTER,

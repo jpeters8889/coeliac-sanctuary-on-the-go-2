@@ -21,6 +21,10 @@ export default {
             return axios.get(url);
         },
 
+        apiGetNationwidePlaces(page = 1, limit = 20) {
+          return axios.get(`${this.apiRoot}/wheretoeat?page=${page}&filter[county]=1`);
+        },
+
         apiGetVenueTypes() {
             return axios.get(`${this.apiRoot}/wheretoeat/venueTypes`);
         },
@@ -52,11 +56,14 @@ export default {
                  name: name,
                  email: email,
                  comment: comment,
+                 method: 'app',
              }, {
                  headers: {
                      'X-CSRF-TOKEN': token,
                  },
-             })
+             });
+
+             return promise;
           });
 
           return promise;

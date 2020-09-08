@@ -262,7 +262,7 @@ SearchBar {
     .title, .info {
       padding: 10;
       margin: 0;
-    }
+    }ƒ
 
     .title {
       font-weight: bold;
