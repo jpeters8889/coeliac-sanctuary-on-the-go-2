@@ -20,10 +20,12 @@
 <script>
 import MakesApiRequests from "../../mixins/MakesApiRequests";
 import * as nstoasts from "nativescript-toasts";
+import HasAnalytics from "../../mixins/HasAnalytics";
 
 export default {
   mixins: [
     MakesApiRequests,
+    HasAnalytics,
   ],
 
   props: {
@@ -37,8 +39,24 @@ export default {
     details: '',
   }),
 
+  mounted() {
+    this.pushModalView('report-place', [
+      {
+        key: 'place_id',
+        value: this.placeId,
+      }
+    ]);
+  },
+
   methods: {
     cancel() {
+      this.logAnalyticEvent('canceled-report-place', [
+        {
+          key: 'place_id',
+          value: this.placeId,
+        }
+      ])
+
       this.$modal.close();
     },
 
@@ -47,6 +65,13 @@ export default {
         alert('Please tell us some information about this place...');
         return;
       }
+
+      this.logAnalyticEvent('submitted-place-report', [
+        {
+          key: 'place_id',
+          value: this.placeId,
+        }
+      ])
 
       const report = `${this.details}\n\nThis report is for place ID ${this.placeId}`;
 

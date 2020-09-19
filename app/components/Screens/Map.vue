@@ -1,5 +1,5 @@
 <template>
-  <Page>
+  <Page @loaded="createAd()">
     <AppHeading title="Map of Places" can-go-back/>
 
     <FlexboxLayout flexDirection="column" justifyContent="space-between">
@@ -33,14 +33,18 @@ import MakesApiRequests from "../../mixins/MakesApiRequests";
 import HasVenueTypeFilter from "../../mixins/HasVenueTypeFilter";
 import {isAndroid, isIOS} from "tns-core-modules/platform";
 import PlaceDetails from "../Modals/PlaceDetails";
+import HasAnalytics from "../../mixins/HasAnalytics";
+import DisplaysAd from "../../mixins/DisplaysAd";
 
 const mapsModule = require("nativescript-google-maps-sdk");
 
 export default {
   mixins: [
     GetsLocation,
+    HasAnalytics,
     MakesApiRequests,
     HasVenueTypeFilter,
+    DisplaysAd,
   ],
 
   components: {
@@ -65,6 +69,8 @@ export default {
   }),
 
   mounted() {
+    this.pushScreenView('map');
+
     this.loadVenueTypes(() => {
       this.getLocation().then((coordinates) => {
         this.search.term = '';
@@ -166,19 +172,12 @@ export default {
     },
 
     onMarkerSelect($event) {
-      // if (this.openedMarker != null) {
-      //   this.openedMarker.hideInfoWindow();
-      //
-      //   if (this.openedMarker.equals($event.marker)) {
-      //     this.openedMarker = null;
-      //     return true;
-      //   }
-      // }
-      //
-      // $event.marker.showInfoWindow();
-      // this.openedMarker = $event.marker;
-      //
-      // return true;
+      this.logAnalyticEvent('tapped-map-marker', [
+        {
+          key: 'place_id',
+          value: $event.marker.place.id,
+        }
+      ]);
     },
 
     onMarkerInfoWindowTapped($event) {
@@ -198,9 +197,24 @@ export default {
 
       this.places = [];
 
-      if(this.mapView) {
+      if (this.mapView) {
         this.mapView.removeAllMarkers();
       }
+
+      this.logAnalyticEvent('loaded_eateries', [
+        {
+          key: 'lat',
+          value: this.search.lat,
+        },
+        {
+          key: 'lng',
+          value: this.search.lng,
+        },
+        {
+          key: 'search_string',
+          value: this.search.term,
+        }
+      ])
 
       this.getPlaces();
     },
@@ -219,6 +233,8 @@ export default {
       }).finally(() => {
         this.runSearch();
       });
+
+      this.logAnalyticEvent('loaded-current-location');
     },
 
     openFiltersModal() {
@@ -247,6 +263,7 @@ export default {
 <style scoped lang="scss">
 Page {
   background-color: #addaf9;
+  padding-bottom: 50;
 }
 
 SearchBar {

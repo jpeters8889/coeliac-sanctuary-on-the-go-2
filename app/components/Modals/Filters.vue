@@ -1,5 +1,5 @@
 <template>
-  <Page>
+  <Page @loaded="createAd()">
     <ScrollView>
       <StackLayout orientation="vertical">
         <template v-for="group in groups">
@@ -30,9 +30,15 @@
 
 <script>
 import FindsIndex from "../../mixins/FindsIndex";
+import HasAnalytics from "../../mixins/HasAnalytics";
+import DisplaysAd from "../../mixins/DisplaysAd";
 
 export default {
-  mixins: [FindsIndex],
+  mixins: [
+      FindsIndex,
+      HasAnalytics,
+      DisplaysAd,
+  ],
 
   props: {
     filters: {
@@ -46,6 +52,8 @@ export default {
   }),
 
   mounted() {
+    this.pushModalView('filters');
+
     this.groups = this.filters;
 
     this.groups.map((filter) => {
@@ -127,6 +135,7 @@ export default {
 <style lang="scss">
 Page {
   background-color: #addaf9;
+  padding-bottom: 50;
 }
 
 Label {

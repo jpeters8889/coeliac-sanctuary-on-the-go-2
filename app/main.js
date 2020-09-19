@@ -25,8 +25,11 @@ if (isIOS) {
   GMSServices.provideAPIKey('AIzaSyA5JYk5L0_9TQ7Y7N9IZd2-uACHKjdHvX4');
 }
 
+
 Vue.registerElement('MapView', () => require('nativescript-google-maps-sdk').MapView);
 
 new Vue({
-  render: h => h('frame', [h(App)])
+  render: h => h('frame', [h(App)]),
 }).$start()
+
+

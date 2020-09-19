@@ -1,5 +1,5 @@
 <template>
-  <Page>
+  <Page @loaded="createAd()">
     <AppHeading title="Nationwide Places" can-go-back/>
 
     <FlexboxLayout flexDirection="column">
@@ -39,6 +39,8 @@
 <script>
 import AppHeading from "../AppHeading";
 import MakesApiRequests from "../../mixins/MakesApiRequests";
+import HasAnalytics from "../../mixins/HasAnalytics";
+import DisplaysAd from "../../mixins/DisplaysAd";
 
 export default {
   components: {
@@ -46,7 +48,9 @@ export default {
   },
 
   mixins: [
+    HasAnalytics,
     MakesApiRequests,
+    DisplaysAd,
   ],
 
   data: () => ({
@@ -60,6 +64,8 @@ export default {
   }),
 
   mounted() {
+    this.pushScreenView('nationwide');
+
     this.runSearch();
   },
 
@@ -93,6 +99,13 @@ export default {
 
           this.getPlaces();
         }, 500);
+
+        this.logAnalyticEvent('loaded_more_nationwide_places', [
+          {
+            key: 'page_num',
+            value: this.currentPage,
+          }
+        ])
       }
     },
 
@@ -129,6 +142,7 @@ export default {
 <style scoped lang="scss">
 Page {
   background-color: #addaf9;
+  padding-bottom: 50;
 }
 
 .heading {

@@ -1,5 +1,5 @@
 <template>
-  <Page>
+  <Page @loaded="createAd()">
     <StackLayout>
       <FlexboxLayout justifyContent="space-between" class="title">
         <Label flexGrow="1" :text="place.name"></Label>
@@ -21,7 +21,7 @@
           <template v-if="place.reviews.length">
             <Label text="Our Reviews" class="ratings-title"></Label>
 
-            <Label class="reviewLink" v-for="review in place.reviews" :text="reviewLabel(review)"
+            <Label class="reviewLink" v-for="review in place.reviews" :text="reviewLabel(review)" :key="review.id"
                    @tap="openWebsite(review.link, true)"></Label>
             <Label class="line"></Label>
           </template>
@@ -39,8 +39,9 @@
               </Label>
 
               <Label class="rating-wrapper" :textWrap="true" v-if="place.ratings.length > 0"
-                     v-for="rating in place.ratings">
-                <Span v-for="star in ratingArray(rating.rating)" class="fas star" :text="star | fonticon"></Span>
+                     v-for="rating in place.ratings" :key="rating">
+                <Span v-for="star in ratingArray(rating.rating)" class="fas star" :text="star | fonticon"
+                      :key="star"></Span>
                 <Span :text="'\n'"></Span>
                 <Span v-if="rating.body" :text="rating.body" :textWrap="true"></Span>
                 <Span v-else>Reviewer left no text with their rating...</Span>
@@ -61,15 +62,31 @@
 <script>
 import PlaceDetailsMenu from "./Menus/PlaceDetailsMenu";
 import RatePlace from "./RatePlace";
+import HasAnalytics from "../../mixins/HasAnalytics";
+import DisplaysAd from "../../mixins/DisplaysAd";
 
 const utilsModule = require("tns-core-modules/utils/utils");
 const moment = require("moment");
 
 export default {
+  mixins: [
+    HasAnalytics,
+      DisplaysAd,
+  ],
+
   props: {
     place: {
       required: true,
     }
+  },
+
+  mounted() {
+    this.pushModalView('place-details', [
+      {
+        key: 'place_id',
+        value: this.place.id,
+      }
+    ])
   },
 
   methods: {
@@ -77,6 +94,17 @@ export default {
       if (internal) {
         url = 'https://develop.coeliacsanctuary.co.uk' + url;
       }
+
+      this.logAnalyticEvent('opened_eatery_website', [
+        {
+          key: 'place_id',
+          value: this.place.id,
+        },
+        {
+          key: 'url',
+          value: url,
+        }
+      ])
 
       utilsModule.openUrl(url)
     },
@@ -130,6 +158,7 @@ export default {
 <style lang="scss" scoped>
 Page {
   background-color: transparentize(#addaf9, 0.5);
+  padding-bottom: 50;
 }
 
 .title {

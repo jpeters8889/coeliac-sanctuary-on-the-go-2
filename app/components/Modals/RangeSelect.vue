@@ -11,7 +11,13 @@
 </template>
 
 <script>
+import HasAnalytics from "../../mixins/HasAnalytics";
+
 export default {
+  mixins: [
+    HasAnalytics,
+  ],
+
   props: {
     currentValue: {
       type: Number,
@@ -19,8 +25,19 @@ export default {
     }
   },
 
+  mounted() {
+    this.pushModalView('range-select')
+  },
+
   methods: {
     selectValue(value) {
+      this.logAnalyticEvent('changed-search-range', [
+        {
+          key: 'range',
+          value: value,
+        }
+      ])
+
       this.$root.$emit('search-range-change', value);
       this.$modal.close();
     }
@@ -29,13 +46,13 @@ export default {
 </script>
 
 <style>
- Label {
-   padding: 20 60;
-   font-size: 15;
-   border-bottom: 1px solid #ccc;
- }
+Label {
+  padding: 20 60;
+  font-size: 15;
+  border-bottom: 1px solid #ccc;
+}
 
- .selected {
-   background: #80CCFC;
- }
+.selected {
+  background: #80CCFC;
+}
 </style>

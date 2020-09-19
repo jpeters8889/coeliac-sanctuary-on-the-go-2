@@ -1,5 +1,5 @@
 <template>
-  <Page>
+  <Page @loaded="createAd()">
     <AppHeading title="About" can-go-back></AppHeading>
 
     <ScrollView>
@@ -40,7 +40,8 @@
                text="We use anonymous analytical data to show us how users use this app, if you'd prefer to not share anonymous usage reports you can opt out below."></Label>
 
         <FlexboxLayout alignItems="center">
-          <Switch v-model="analyticsOptIn" :color="analyticsOptIn ? '#DBBC25' : '#777'" backgroundColor="white" offBackgroundColor="white" />
+          <Switch :checked="analyticsOptIn" @tap="analyticsOptIn = !analyticsOptIn"
+                  :color="analyticsOptIn ? '#DBBC25' : '#777'" backgroundColor="white" offBackgroundColor="white"/>
           <Label :textWrap="true" text="I consent to anonymous usage reports."></Label>
         </FlexboxLayout>
 
@@ -52,18 +53,42 @@
 
 <script>
 import AppHeading from "../AppHeading";
-import AppSettings from "tns-core-modules/application-settings";
+
+const AppSettings = require("tns-core-modules/application-settings");
+
+import HasAnalytics from "../../mixins/HasAnalytics";
+import DisplaysAd from "../../mixins/DisplaysAd";
 
 export default {
+  mixins: [
+    HasAnalytics,
+    DisplaysAd,
+  ],
+
   components: {AppHeading},
 
   data: () => ({
     analyticsOptIn: true,
   }),
 
+  mounted() {
+    this.pushScreenView('about');
+
+    this.analyticsOptIn = AppSettings.getBoolean('enableAnalytics', true);
+  },
+
   watch: {
-    analyticsOptIn: function() {
+    analyticsOptIn: function () {
+      this.logAnalyticEvent('updated-analytics-tracking', [
+        {
+          key: 'tracking_enabled',
+          value: this.analyticsOptIn
+        }
+      ])
+
       AppSettings.setBoolean('enableAnalytics', this.analyticsOptIn);
+      console.log(AppSettings.getAllKeys());
+
     }
   },
 }
@@ -72,6 +97,7 @@ export default {
 <style scoped lang="scss">
 Page {
   background-color: #addaf9;
+  padding-bottom: 50;
 }
 
 .title {

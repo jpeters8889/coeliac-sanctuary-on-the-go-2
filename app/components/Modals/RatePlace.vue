@@ -6,6 +6,7 @@
 
         <FlexboxLayout justifyContent="space-around">
           <Label v-for="thisRating in possibleRatings"
+                 :key="thisRating"
                  class="ratingSelect"
                  :class="thisRating <= rating ? 'fas' : 'far'"
                  :text="'fa-star' | fonticon"
@@ -37,10 +38,12 @@
 <script>
 import MakesApiRequests from "../../mixins/MakesApiRequests";
 import * as nstoasts from "nativescript-toasts";
+import HasAnalytics from "../../mixins/HasAnalytics";
 
 export default {
   mixins: [
-      MakesApiRequests,
+    MakesApiRequests,
+    HasAnalytics
   ],
 
   props: {
@@ -59,8 +62,24 @@ export default {
     possibleRatings: [1, 2, 3, 4, 5]
   }),
 
+  mounted() {
+    this.pushModalView('rate-place', [
+      {
+        key: 'place_id',
+        value: this.placeId,
+      }
+    ]);
+  },
+
   methods: {
     cancel() {
+      this.logAnalyticEvent('canceled-place-rating', [
+        {
+          key: 'place_id',
+          value: this.placeId,
+        }
+      ])
+
       this.$modal.close();
     },
 
@@ -69,6 +88,13 @@ export default {
         alert('Please enter your name, email and comment to submit a review with your rating...');
         return;
       }
+
+      this.logAnalyticEvent('submitted-place-rating', [
+        {
+          key: 'place_id',
+          value: this.placeId,
+        }
+      ])
 
       this.apiSubmitPlaceRating(this.placeId, this.rating, this.name, this.email, this.comment).then((response) => {
         nstoasts.show({

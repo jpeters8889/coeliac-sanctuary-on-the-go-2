@@ -1,22 +1,23 @@
 <template>
-  <Page>
+  <Page @loaded="createAd()">
     <AppHeading/>
 
-    <StackLayout orientation="vertical">
+    <ScrollView>
+      <StackLayout orientation="vertical">
+        <MenuButton text="Coeliac Sanctuary Map" sub-text="Independent Eateries Only" to="map"></MenuButton>
 
-      <MenuButton text="Coeliac Sanctuary Map" sub-text="Independent Eateries Only" to="map"></MenuButton>
+        <MenuButton text="List of Places" sub-text="Independent Eateries Only" to="list"></MenuButton>
 
-      <MenuButton text="List of Places" sub-text="Independent Eateries Only" to="list"></MenuButton>
+        <MenuButton text="Nationwide Chains" to="nationwide"></MenuButton>
 
-      <MenuButton text="Nationwide Chains" to="nationwide"></MenuButton>
+        <MenuButton text="Recommend a Place" to="suggest"></MenuButton>
 
-      <MenuButton text="Recommend a Place" to="suggest"></MenuButton>
+        <MenuButton theme="link" text="Visit the Coeliac Sanctuary website for recipes, blogs, reviews and more!"
+                    sub-text="(Opens in mobile browser)" to="website"></MenuButton>
 
-      <MenuButton theme="link" text="Visit the Coeliac Sanctuary website for recipes, blogs, reviews and more!"
-                  sub-text="(Opens in mobile browser)" to="website"></MenuButton>
-
-      <MenuButton theme="link" text="About Coeliac Sanctuary on the Go" to="about"></MenuButton>
-    </StackLayout>
+        <MenuButton theme="link" text="About Coeliac Sanctuary on the Go" to="about"></MenuButton>
+      </StackLayout>
+    </ScrollView>
   </Page>
 </template>
 
@@ -28,17 +29,33 @@ import Map from "./Map";
 import Nationwide from "./Nationwide";
 import SuggestPlace from "./SuggestPlace";
 import About from "./About";
+import HasAnalytics from "../../mixins/HasAnalytics";
+import DisplaysAd from "../../mixins/DisplaysAd";
 
 const utilsModule = require("tns-core-modules/utils/utils");
 
 export default {
+  mixins: [
+    DisplaysAd,
+    HasAnalytics
+  ],
+
   components: {
     AppHeading,
     MenuButton
   },
 
   mounted() {
+    this.pushScreenView('home');
+
     this.$root.$on('menu-click', (item) => {
+      this.logAnalyticEvent('clicked_button', [
+        {
+          key: 'button',
+          value: item,
+        }
+      ]);
+
       switch (item) {
         case 'map':
           this.navigateToMap();
@@ -90,8 +107,12 @@ export default {
 </script>
 
 <style scoped>
+Page {
+  padding-bottom: 50;
+  background-color: #addaf9;
+}
+
 StackLayout {
   padding: 10;
-  background-color: #addaf9;
 }
 </style>

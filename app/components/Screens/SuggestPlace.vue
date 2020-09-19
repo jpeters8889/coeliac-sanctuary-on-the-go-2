@@ -1,5 +1,5 @@
 <template>
-  <Page>
+  <Page @loaded="createAd()">
     <AppHeading title="Suggest a Place" can-go-back/>
 
     <ScrollView>
@@ -23,18 +23,30 @@ import AppHeading from "../AppHeading";
 import MakesApiRequests from "../../mixins/MakesApiRequests";
 import * as nstoasts from "nativescript-toasts";
 import Home from "./Home";
+import HasAnalytics from "../../mixins/HasAnalytics";
+import DisplaysAd from "../../mixins/DisplaysAd";
 
 export default {
   components: {AppHeading},
 
-  mixins: [MakesApiRequests],
+  mixins: [
+    HasAnalytics,
+    MakesApiRequests,
+    DisplaysAd,
+  ],
 
   data: () => ({
     body: '',
   }),
 
+  mounted() {
+    this.pushScreenView('suggest');
+  },
+
   methods: {
     submit() {
+      this.logAnalyticEvent('submitted-place-request');
+
       this.apiSubmitPlaceRequest(this.body)
           .then(() => {
             nstoasts.show({
@@ -58,6 +70,7 @@ export default {
 <style scoped lang="scss">
 Page {
   background-color: #addaf9;
+  padding-bottom: 50;
 }
 
 TextView {

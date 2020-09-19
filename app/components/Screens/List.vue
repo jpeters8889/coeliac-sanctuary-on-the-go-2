@@ -1,5 +1,5 @@
 <template>
-  <Page>
+  <Page @loaded="createAd()">
     <AppHeading title="Place List" can-go-back/>
 
     <template v-if="!hasLoaded">
@@ -59,14 +59,18 @@ import HasVenueTypeFilter from "../../mixins/HasVenueTypeFilter";
 import Filters from "../Modals/Filters";
 import GetsLocation from "../../mixins/GetsLocation";
 import PlaceDetails from "../Modals/PlaceDetails";
+import HasAnalytics from "../../mixins/HasAnalytics";
+import DisplaysAd from "../../mixins/DisplaysAd";
 
 export default {
   components: {AppHeading},
 
   mixins: [
     GetsLocation,
+    HasAnalytics,
     HasVenueTypeFilter,
     MakesApiRequests,
+    DisplaysAd,
   ],
 
   data: () => ({
@@ -86,6 +90,8 @@ export default {
   }),
 
   mounted() {
+    this.pushScreenView('list');
+
     this.loadVenueTypes(() => {
       this.getLocation().then((coordinates) => {
         this.search.term = '';
@@ -123,6 +129,25 @@ export default {
 
           this.getPlaces();
         }, 500);
+
+        this.logAnalyticEvent('loaded_more_eateries', [
+          {
+            key: 'lat',
+            value: this.search.lat,
+          },
+          {
+            key: 'lng',
+            value: this.search.lng,
+          },
+          {
+            key: 'search_string',
+            value: this.search.term,
+          },
+          {
+            key: 'page_number',
+            value: this.currentPage,
+          }
+        ])
       }
     },
 
@@ -170,6 +195,21 @@ export default {
       this.currentPage = 1;
       this.places = [];
       this.getPlaces();
+
+      this.logAnalyticEvent('ran-place-search', [
+        {
+          key: 'lat',
+          value: this.search.lat,
+        },
+        {
+          key: 'lng',
+          value: this.search.lng,
+        },
+        {
+          key: 'search_string',
+          value: this.search.term,
+        }
+      ])
     },
 
     searchLoaded($event) {
@@ -186,6 +226,8 @@ export default {
       }).finally(() => {
         this.runSearch();
       });
+
+      this.logAnalyticEvent('gone-to-location')
     },
 
     openRangeSelectModal() {
@@ -235,6 +277,7 @@ export default {
 <style scoped lang="scss">
 Page {
   background-color: #addaf9;
+  padding-bottom: 50;
 }
 
 ListView {
@@ -262,8 +305,9 @@ SearchBar {
     .title, .info {
       padding: 10;
       margin: 0;
-    }ƒ
+    }
 
+    ƒ
     .title {
       font-weight: bold;
       padding-bottom: 5;
