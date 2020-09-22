@@ -1,5 +1,5 @@
 <template>
-  <Label :class="theme" @tap="onClick()" :textWrap="true">
+  <Label @tap="onClick()" :textWrap="true">
     <Span :text="text" class="title"></Span>
     <Span v-if="subText !== ''" :text="'\n\n' + subText" class="subtext"></Span>
   </Label>
@@ -19,10 +19,6 @@ export default {
     subText: {
       type: String,
       default: '',
-    },
-    theme: {
-      type: String,
-      default: 'primary',
     }
   },
 
@@ -43,47 +39,29 @@ Label {
   box-shadow: none;
   text-align: center;
   padding: 5;
+  background-color: #addaf9;
+  border-color: #80ccfc;
+  color: black;
 
   Span {
     background-color: transparent;
-  }
-}
-
-.primary {
-  background-color: rgba(219, 188, 37, 0.8);
-  border-color: rgba(219, 188, 37, 1);
-  color: black;
-}
-
-.link {
-  background-color: rgba(128, 204, 252, 0.3);
-  border-color: rgba(128, 204, 252, 1);
-  color: black;
-
-  Span {
     font-weight: normal;
   }
 
   .title {
     font-size: 15;
     font-weight: normal;
+    display: block;
+    background-color: transparent;
   }
 
   .subtext {
-    font-size: transparentize(#000, 0.5);
+    color: transparentize(#000, 0.5);
+    display: block;
+    font-size: 12;
+    padding-top: 50;
+    line-height: 1.5;
+    background-color: transparent;
   }
-}
-
-.title {
-  display: block;
-  font-size: 18;
-  font-weight: normal;
-}
-
-.subtext {
-  display: block;
-  font-size: 12;
-  padding-top: 50;
-  line-height: 1.5;
 }
 </style>

@@ -4,25 +4,34 @@
 
     <ScrollView>
       <StackLayout orientation="vertical">
-        <MenuButton text="Coeliac Sanctuary Map" sub-text="Independent Eateries Only" to="map"></MenuButton>
 
-        <MenuButton text="List of Places" sub-text="Independent Eateries Only" to="list"></MenuButton>
+        <FlexboxLayout justifyContent="space-between">
+          <SquareMenuButton text="Map" :icon="['far', 'fa-map']" to="map"></SquareMenuButton>
 
-        <MenuButton text="Nationwide Chains" to="nationwide"></MenuButton>
+          <SquareMenuButton text="List" to="list" :icon="['fas', 'fa-th-list']"></SquareMenuButton>
+        </FlexboxLayout>
 
-        <MenuButton text="Recommend a Place" to="suggest"></MenuButton>
+        <FlexboxLayout justifyContent="space-between">
+          <SquareMenuButton text="Nationwide Chains" to="nationwide" :icon="['fas', 'fa-hamburger']"></SquareMenuButton>
 
-        <MenuButton theme="link" text="Visit the Coeliac Sanctuary website for recipes, blogs, reviews and more!"
-                    sub-text="(Opens in mobile browser)" to="website"></MenuButton>
+          <SquareMenuButton text="Recommend a Place" to="suggest" :icon="['far', 'fa-envelope-open']"></SquareMenuButton>
+        </FlexboxLayout>
 
-        <MenuButton theme="link" text="About Coeliac Sanctuary on the Go" to="about"></MenuButton>
+        <SubMenuButton text="Check out our online shop for translation cards, wristbands, stickers and more!"
+                       sub-text="(Opens in mobile browser)" to="website"></SubMenuButton>
+
+        <SubMenuButton text="Visit the Coeliac Sanctuary website for recipes, blogs, reviews and more!"
+                       sub-text="(Opens in mobile browser)" to="website"></SubMenuButton>
+
+        <SubMenuButton text="About Coeliac Sanctuary on the Go" to="about"></SubMenuButton>
       </StackLayout>
     </ScrollView>
   </Page>
 </template>
 
 <script>
-import MenuButton from "../MenuButton";
+import SquareMenuButton from "../SquareMenuButton";
+import SubMenuButton from "../SubMenuButton";
 import AppHeading from "../AppHeading";
 import List from "./List";
 import Map from "./Map";
@@ -42,7 +51,8 @@ export default {
 
   components: {
     AppHeading,
-    MenuButton
+    SubMenuButton,
+    SquareMenuButton,
   },
 
   methods: {
@@ -111,10 +121,14 @@ export default {
 <style scoped lang="scss">
 Page {
   padding-bottom: 50;
-  background-color: #addaf9;
+  background-color: transparentize(#addaf9, 0.5);
 }
 
 StackLayout {
   padding: 10;
+}
+
+FlexboxLayout {
+  margin-bottom: 10;
 }
 </style>
