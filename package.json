@@ -7,11 +7,11 @@
   "nativescript": {
     "id": "com.coeliacsanctuary.onthego",
     "templateVersion": "v2",
-    "tns-android": {
-      "version": "6.5.0"
-    },
     "tns-ios": {
       "version": "6.5.0"
+    },
+    "tns-android": {
+      "version": "6.5.3"
     }
   },
   "dependencies": {

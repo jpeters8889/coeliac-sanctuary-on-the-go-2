@@ -1,5 +1,5 @@
 <template>
-  <Page>
+  <Page @loaded="loaded()">
     <StackLayout orientation="vertical">
       <Label text="1 Mile" :class="currentValue === 1 ? 'selected' : ''" @tap="selectValue(1)"></Label>
       <Label text="2 Miles" :class="currentValue === 2 ? 'selected' : ''" @tap="selectValue(2)"></Label>
@@ -25,11 +25,11 @@ export default {
     }
   },
 
-  mounted() {
-    this.pushModalView('range-select')
-  },
-
   methods: {
+    loaded() {
+      this.pushModalView('range-select')
+    },
+
     selectValue(value) {
       this.logAnalyticEvent('changed-search-range', [
         {

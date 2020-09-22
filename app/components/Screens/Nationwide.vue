@@ -1,5 +1,5 @@
 <template>
-  <Page @loaded="createAd()">
+  <Page @loaded="loaded()">
     <AppHeading title="Nationwide Places" can-go-back/>
 
     <FlexboxLayout flexDirection="column">
@@ -63,13 +63,15 @@ export default {
     places: [],
   }),
 
-  mounted() {
-    this.pushScreenView('nationwide');
-
-    this.runSearch();
-  },
-
   methods: {
+    loaded() {
+      this.createAd();
+
+      this.pushScreenView('nationwide');
+
+      this.runSearch();
+    },
+
     runSearch() {
       this.hasLoaded = false;
       this.currentPage = 1;

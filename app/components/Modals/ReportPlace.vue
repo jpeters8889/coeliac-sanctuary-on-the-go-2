@@ -1,5 +1,5 @@
 <template>
-  <Page>
+  <Page @loaded="loaded()">
     <ScrollView>
       <StackLayout>
         <Label :textWrap="true"
@@ -39,16 +39,16 @@ export default {
     details: '',
   }),
 
-  mounted() {
-    this.pushModalView('report-place', [
-      {
-        key: 'place_id',
-        value: this.placeId,
-      }
-    ]);
-  },
-
   methods: {
+    loaded() {
+      this.pushModalView('report-place', [
+        {
+          key: 'place_id',
+          value: this.placeId,
+        }
+      ]);
+    },
+
     cancel() {
       this.logAnalyticEvent('canceled-report-place', [
         {

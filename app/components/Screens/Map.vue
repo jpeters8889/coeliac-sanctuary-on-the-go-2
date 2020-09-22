@@ -1,22 +1,28 @@
 <template>
-  <Page @loaded="createAd()">
+  <Page @loaded="loaded()">
     <AppHeading title="Map of Places" can-go-back/>
 
     <FlexboxLayout flexDirection="column" justifyContent="space-between">
       <SearchBar v-model="search.term" @submit="runSearch()" @loaded="searchLoaded($event)" flexShrink="0"/>
 
-      <MapView iosOverflowSafeArea="true"
-               :latitude="search.lat"
-               :longitude="search.lng"
-               :zoom="zoom"
-               :moveOnMarkerPress="false"
-               height="100%"
-               flexGrow="1"
-               @mapReady="onMapReady"
-               @cameraChanged="mapMoved"
-               @markerSelect="onMarkerSelect"
-               @markerInfoWindowTapped="onMarkerInfoWindowTapped">
-      </MapView>
+      <template v-if="loading">
+        <ActivityIndicator :busy="true" width="100" height="100"></ActivityIndicator>
+      </template>
+
+      <template v-else>
+        <MapView iosOverflowSafeArea="true"
+                 :latitude="search.lat"
+                 :longitude="search.lng"
+                 :zoom="zoom"
+                 :moveOnMarkerPress="false"
+                 height="100%"
+                 flexGrow="1"
+                 @mapReady="onMapReady"
+                 @cameraChanged="mapMoved"
+                 @markerSelect="onMarkerSelect"
+                 @markerInfoWindowTapped="onMarkerInfoWindowTapped">
+        </MapView>
+      </template>
 
       <StackLayout orientation="horizontal" class="bottomBar" flexShrink="0">
         <Button text="Filters" @tap="openFiltersModal()"></Button>
@@ -36,6 +42,7 @@ import PlaceDetails from "../Modals/PlaceDetails";
 import HasAnalytics from "../../mixins/HasAnalytics";
 import DisplaysAd from "../../mixins/DisplaysAd";
 
+const application = require("tns-core-modules/application");
 const mapsModule = require("nativescript-google-maps-sdk");
 
 export default {
@@ -66,25 +73,30 @@ export default {
     mapView: undefined,
 
     openedMarker: null,
+
+    loading: true,
   }),
 
-  mounted() {
-    this.pushScreenView('map');
-
-    this.loadVenueTypes(() => {
-      this.getLocation().then((coordinates) => {
-        this.search.term = '';
-        this.search.lat = coordinates.latitude;
-        this.search.lng = coordinates.longitude;
-
-        this.runSearch();
-      }).catch(() => {
-        this.runSearch();
-      });
-    });
-  },
-
   methods: {
+    loaded() {
+      this.createAd();
+
+      this.pushScreenView('map');
+
+      this.loadVenueTypes(() => {
+        this.getLocation().then((coordinates) => {
+          this.search.term = '';
+          this.search.lat = coordinates.latitude;
+          this.search.lng = coordinates.longitude;
+
+          this.loading = false;
+          this.runSearch();
+        }).catch(() => {
+          this.runSearch();
+        });
+      });
+    },
+
     getPlaces() {
       this.apiSearchPlaces(this.search, {venueType: this.getFilters()}, 1, 50).then((response) => {
         this.totalPages = response.data.data.last_page;
@@ -178,6 +190,13 @@ export default {
           value: $event.marker.place.id,
         }
       ]);
+
+      if (application.android) {
+        application.android.on(application.AndroidApplication.activityBackPressedEvent, function () {
+          $event.marker.hideInfoWindow();
+          return true;
+        });
+      }
     },
 
     onMarkerInfoWindowTapped($event) {
@@ -279,5 +298,9 @@ SearchBar {
 .gps-button {
   width: 60;
   padding: 0;
+}
+
+ActivityIndicator {
+  color: #DBBC25;
 }
 </style>

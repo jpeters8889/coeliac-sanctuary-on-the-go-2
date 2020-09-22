@@ -1,5 +1,5 @@
 <template>
-  <Page @loaded="createAd()">
+  <Page @loaded="loaded()">
     <StackLayout>
       <FlexboxLayout justifyContent="space-between" class="title">
         <Label flexGrow="1" :text="place.name"></Label>
@@ -80,16 +80,18 @@ export default {
     }
   },
 
-  mounted() {
-    this.pushModalView('place-details', [
-      {
-        key: 'place_id',
-        value: this.place.id,
-      }
-    ])
-  },
-
   methods: {
+    loaded() {
+      this.createAd();
+
+      this.pushModalView('place-details', [
+        {
+          key: 'place_id',
+          value: this.place.id,
+        }
+      ]);
+    },
+
     openWebsite(url, internal = false) {
       if (internal) {
         url = 'https://develop.coeliacsanctuary.co.uk' + url;

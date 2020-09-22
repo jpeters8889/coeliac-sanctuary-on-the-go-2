@@ -1,5 +1,5 @@
 <template>
-  <Page>
+  <Page @loaded="loaded()">
     <ScrollView>
       <StackLayout>
         <Label :text="'Please select your rating below'" :textWrap="true" class="title"></Label>
@@ -62,16 +62,16 @@ export default {
     possibleRatings: [1, 2, 3, 4, 5]
   }),
 
-  mounted() {
-    this.pushModalView('rate-place', [
-      {
-        key: 'place_id',
-        value: this.placeId,
-      }
-    ]);
-  },
-
   methods: {
+    loaded() {
+      this.pushModalView('rate-place', [
+        {
+          key: 'place_id',
+          value: this.placeId,
+        }
+      ]);
+    },
+
     cancel() {
       this.logAnalyticEvent('canceled-place-rating', [
         {

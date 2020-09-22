@@ -1,5 +1,5 @@
 <template>
-  <Page @loaded="createAd()">
+  <Page @loaded="loaded()">
     <AppHeading/>
 
     <ScrollView>
@@ -45,44 +45,46 @@ export default {
     MenuButton
   },
 
-  mounted() {
-    this.pushScreenView('home');
-
-    this.$root.$on('menu-click', (item) => {
-      this.logAnalyticEvent('clicked_button', [
-        {
-          key: 'button',
-          value: item,
-        }
-      ]);
-
-      switch (item) {
-        case 'map':
-          this.navigateToMap();
-          break;
-        case 'list':
-          this.navigateToList();
-          break;
-        case 'nationwide':
-          this.navigateToNationwide();
-          break;
-        case 'suggest':
-          this.navigateToSuggest();
-          break;
-        case 'shop':
-          utilsModule.openUrl('https://www.coeliacsanctuary.co.uk/shop');
-          break;
-        case 'website':
-          utilsModule.openUrl('https://www.coeliacsanctuary.co.uk');
-          break;
-        case 'about':
-          this.navigateToAbout();
-          break;
-      }
-    });
-  },
-
   methods: {
+    loaded() {
+      this.createAd();
+
+      this.pushScreenView('home');
+
+      this.$root.$on('menu-click', (item) => {
+        this.logAnalyticEvent('clicked_button', [
+          {
+            key: 'button',
+            value: item,
+          }
+        ]);
+
+        switch (item) {
+          case 'map':
+            this.navigateToMap();
+            break;
+          case 'list':
+            this.navigateToList();
+            break;
+          case 'nationwide':
+            this.navigateToNationwide();
+            break;
+          case 'suggest':
+            this.navigateToSuggest();
+            break;
+          case 'shop':
+            utilsModule.openUrl('https://www.coeliacsanctuary.co.uk/shop');
+            break;
+          case 'website':
+            utilsModule.openUrl('https://www.coeliacsanctuary.co.uk');
+            break;
+          case 'about':
+            this.navigateToAbout();
+            break;
+        }
+      });
+    },
+
     navigateToMap() {
       this.$navigateTo(Map);
     },
@@ -106,7 +108,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 Page {
   padding-bottom: 50;
   background-color: #addaf9;

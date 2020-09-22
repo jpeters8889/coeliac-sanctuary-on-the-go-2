@@ -1,5 +1,5 @@
 <template>
-  <Page @loaded="createAd()">
+  <Page @loaded="loaded()">
     <AppHeading title="About" can-go-back></AppHeading>
 
     <ScrollView>
@@ -45,7 +45,7 @@
           <Label :textWrap="true" text="I consent to anonymous usage reports."></Label>
         </FlexboxLayout>
 
-        <Label class="small" :textWrap="true" text="App Version 2.0.0 Alpha, published 1st Oct 2020"></Label>
+        <Label class="small" :textWrap="true" text="App Version 2.0.0 Alpha, published 20th September 2020"></Label>
       </StackLayout>
     </ScrollView>
   </Page>
@@ -71,10 +71,13 @@ export default {
     analyticsOptIn: true,
   }),
 
-  mounted() {
-    this.pushScreenView('about');
+  methods: {
+    loaded() {
+      this.createAd();
+      this.pushScreenView('about');
 
-    this.analyticsOptIn = AppSettings.getBoolean('enableAnalytics', true);
+      this.analyticsOptIn = AppSettings.getBoolean('enableAnalytics', true);
+    },
   },
 
   watch: {

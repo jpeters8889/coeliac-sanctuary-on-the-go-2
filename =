@@ -1,0 +1,55 @@
+Preparing project...
+Bundling application for entryPath ./main...
+Hash: aea68e3f814583a2bcb3
+Version: webpack 4.27.1
+Time: 10217ms
+Built at: 20/09/2020 18:58:19
+                             Asset       Size  Chunks             Chunk Names
+                    assets/all.css   74.4 KiB          [emitted]  
+assets/images/NativeScript-Vue.png   8.22 KiB          [emitted]  
+                         bundle.js    136 KiB       0  [emitted]  bundle
+           fonts/fa-brands-400.ttf    131 KiB          [emitted]  
+          fonts/fa-regular-400.ttf   33.3 KiB          [emitted]  
+            fonts/fa-solid-900.ttf    199 KiB          [emitted]  
+                      package.json  181 bytes          [emitted]  
+                        runtime.js   1.86 KiB       1  [emitted]  runtime
+               tns-java-classes.js    0 bytes          [emitted]  
+                         vendor.js   2.19 MiB       2  [emitted]  vendor
+Entrypoint bundle = runtime.js vendor.js bundle.js
+  [9] ./mixins/HasAnalytics.js 996 bytes {0} [built]
+ [15] ./mixins/DisplaysAd.js 642 bytes {0} [built]
+ [22] ./mixins/MakesApiRequests.js 3.21 KiB {0} [built]
+ [63] ./mixins/GetsLocation.js 481 bytes {0} [built]
+ [64] ./mixins/HasVenueTypeFilter.js 1.58 KiB {0} [built]
+[148] ./mixins/FindsIndex.js 246 bytes {0} [built]
+[149] ./main.js 2.35 KiB {0} [built]
+[155] ./package.json 162 bytes {0} [optional] [built]
+[185] ./app.scss 1.67 KiB {0} [optional] [built]
+[377] ./components/App.vue + 74 modules 105 KiB {0} [built]
+      |    75 modules
+[534] . sync nonrecursive ^\.\/app\.(css|scss|less|sass)$ 175 bytes {0} [built]
+[535] . sync (?<!\bApp_Resources\b.*)(?<!\.\/\btests\b\/.*?)\.(xml|css|js|kt|(?<!\.d\.)ts|(?<!\b_[\w-]*\.)scss)$ 390 bytes {0} [built]
+[536] ./assets/all.css 85.4 KiB {0} [optional] [built]
+[631] ../node_modules/moment/locale sync ^\.\/.*$ 3.16 KiB {0} [optional] [built]
+    + 636 hidden modules
+Webpack compilation complete.
+nativescript-plugin-firebase: running release build or change in environment detected, forcing prepare!
+Project successfully prepared (android)
+Configure firebase
+Copy /Users/jamiepeters/code/coeliac-sanctuary-on-the-go-2/app/App_Resources/Android/google-services.json to /Users/jamiepeters/code/coeliac-sanctuary-on-the-go-2/platforms/android/app/google-services.json.
+Building project...
+Gradle build...
+	 + setting applicationId
+	 + applying user-defined configuration from /Users/jamiepeters/code/coeliac-sanctuary-on-the-go-2/app/App_Resources/Android/before-plugins.gradle
+	 + applying user-defined configuration from /Users/jamiepeters/code/coeliac-sanctuary-on-the-go-2/app/App_Resources/Android/app.gradle
+	 + using android X library androidx.legacy:legacy-support-v4:1.0.0
+	 + adding nativescript runtime package dependency: nativescript-optimized
+	 + adding aar plugin dependency: /Users/jamiepeters/code/coeliac-sanctuary-on-the-go-2/node_modules/nativescript-admob/platforms/android/nativescript_admob.aar
+	 + adding aar plugin dependency: /Users/jamiepeters/code/coeliac-sanctuary-on-the-go-2/node_modules/nativescript-geolocation/platforms/android/nativescript_geolocation.aar
+	 + adding aar plugin dependency: /Users/jamiepeters/code/coeliac-sanctuary-on-the-go-2/node_modules/nativescript-google-maps-sdk/platforms/android/nativescript_google_maps_sdk.aar
+	 + adding aar plugin dependency: /Users/jamiepeters/code/coeliac-sanctuary-on-the-go-2/node_modules/nativescript-plugin-firebase/platforms/android/nativescript_plugin_firebase.aar
+	 + adding aar plugin dependency: /Users/jamiepeters/code/coeliac-sanctuary-on-the-go-2/node_modules/nativescript-socketio/platforms/android/fancylogger-release.aar
+	 + adding aar plugin dependency: /Users/jamiepeters/code/coeliac-sanctuary-on-the-go-2/node_modules/tns-core-modules-widgets/platforms/android/widgets-release.aar
+Calling mockable JAR artifact transform to create file: /Users/jamiepeters/.gradle/caches/transforms-2/files-2.1/429f1491c9943a257055131d7597be4a/android.jar with input /usr/local/share/android-sdk/platforms/android-29/android.jar
+Project successfully built.
+The build result is located at: /Users/jamiepeters/code/coeliac-sanctuary-on-the-go-2/platforms/android/app/build/outputs/apk/release/app-release.apk

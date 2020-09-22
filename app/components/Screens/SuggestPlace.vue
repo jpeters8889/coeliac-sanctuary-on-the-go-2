@@ -1,5 +1,5 @@
 <template>
-  <Page @loaded="createAd()">
+  <Page @loaded="loaded()">
     <AppHeading title="Suggest a Place" can-go-back/>
 
     <ScrollView>
@@ -39,11 +39,13 @@ export default {
     body: '',
   }),
 
-  mounted() {
-    this.pushScreenView('suggest');
-  },
-
   methods: {
+    loaded() {
+      this.createAd()
+
+      this.pushScreenView('suggest');
+    },
+
     submit() {
       this.logAnalyticEvent('submitted-place-request');
 

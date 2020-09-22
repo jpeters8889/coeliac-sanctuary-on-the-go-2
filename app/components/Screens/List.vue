@@ -1,5 +1,5 @@
 <template>
-  <Page @loaded="createAd()">
+  <Page @loaded="loaded()">
     <AppHeading title="Place List" can-go-back/>
 
     <template v-if="!hasLoaded">
@@ -89,28 +89,30 @@ export default {
     places: [],
   }),
 
-  mounted() {
-    this.pushScreenView('list');
+  methods: {
+    loaded() {
+      this.createAd();
 
-    this.loadVenueTypes(() => {
-      this.getLocation().then((coordinates) => {
-        this.search.term = '';
-        this.search.lat = coordinates.latitude;
-        this.search.lng = coordinates.longitude;
+      this.pushScreenView('list');
 
-        this.runSearch();
-      }).catch(() => {
+      this.loadVenueTypes(() => {
+        this.getLocation().then((coordinates) => {
+          this.search.term = '';
+          this.search.lat = coordinates.latitude;
+          this.search.lng = coordinates.longitude;
+
+          this.runSearch();
+        }).catch(() => {
+          this.runSearch();
+        });
+      });
+
+      this.$root.$on('search-range-change', (value) => {
+        this.search.range = value;
         this.runSearch();
       });
-    });
+    },
 
-    this.$root.$on('search-range-change', (value) => {
-      this.search.range = value;
-      this.runSearch();
-    });
-  },
-
-  methods: {
     placeIcon(place) {
       switch (place.type.type) {
         case 'att':

@@ -1,5 +1,5 @@
 <template>
-  <Page @loaded="createAd()">
+  <Page @loaded="loaded()">
     <ScrollView>
       <StackLayout orientation="vertical">
         <template v-for="group in groups">
@@ -51,20 +51,22 @@ export default {
     accordions: [],
   }),
 
-  mounted() {
-    this.pushModalView('filters');
-
-    this.groups = this.filters;
-
-    this.groups.map((filter) => {
-      this.accordions.push({
-        id: filter.id,
-        expanded: false,
-      });
-    });
-  },
-
   methods: {
+    loaded() {
+      this.createAd();
+
+      this.pushModalView('filters');
+
+      this.groups = this.filters;
+
+      this.groups.map((filter) => {
+        this.accordions.push({
+          id: filter.id,
+          expanded: false,
+        });
+      });
+    },
+
     isExpanded(group) {
       const accordion = this.findAccordion(group);
 
