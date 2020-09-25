@@ -12,13 +12,15 @@
         </FlexboxLayout>
 
         <FlexboxLayout justifyContent="space-between">
-          <SquareMenuButton text="Nationwide Chains" to="nationwide" :icon="['fas', 'fa-hamburger']"></SquareMenuButton>
+          <SquareMenuButton text="Nationwide Chains" to="nationwide"
+                            :icon="['fas', 'fa-hamburger']"></SquareMenuButton>
 
-          <SquareMenuButton text="Recommend a Place" to="suggest" :icon="['far', 'fa-envelope-open']"></SquareMenuButton>
+          <SquareMenuButton text="Recommend a Place" to="suggest"
+                            :icon="['far', 'fa-envelope-open']"></SquareMenuButton>
         </FlexboxLayout>
 
         <SubMenuButton text="Check out our online shop for translation cards, wristbands, stickers and more!"
-                       sub-text="(Opens in mobile browser)" to="website"></SubMenuButton>
+                       sub-text="(Opens in mobile browser)" to="shop"></SubMenuButton>
 
         <SubMenuButton text="Visit the Coeliac Sanctuary website for recipes, blogs, reviews and more!"
                        sub-text="(Opens in mobile browser)" to="website"></SubMenuButton>
@@ -40,6 +42,8 @@ import SuggestPlace from "./SuggestPlace";
 import About from "./About";
 import HasAnalytics from "../../mixins/HasAnalytics";
 import DisplaysAd from "../../mixins/DisplaysAd";
+import {Frame} from "tns-core-modules/ui/frame/frame";
+import Home from './Home';
 
 const utilsModule = require("tns-core-modules/utils/utils");
 
@@ -61,58 +65,70 @@ export default {
 
       this.pushScreenView('home');
 
-      this.$root.$on('menu-click', (item) => {
-        this.logAnalyticEvent('clicked_button', [
-          {
-            key: 'button',
-            value: item,
-          }
-        ]);
+      if (Frame.topmost().backStack.length === 0) {
+        this.$root.$on('menu-click', (item) => {
+          this.logAnalyticEvent('clicked_button', [
+            {
+              key: 'button',
+              value: item,
+            }
+          ]);
 
-        switch (item) {
-          case 'map':
-            this.navigateToMap();
-            break;
-          case 'list':
-            this.navigateToList();
-            break;
-          case 'nationwide':
-            this.navigateToNationwide();
-            break;
-          case 'suggest':
-            this.navigateToSuggest();
-            break;
-          case 'shop':
-            utilsModule.openUrl('https://www.coeliacsanctuary.co.uk/shop');
-            break;
-          case 'website':
-            utilsModule.openUrl('https://www.coeliacsanctuary.co.uk');
-            break;
-          case 'about':
-            this.navigateToAbout();
-            break;
-        }
-      });
+          switch (item) {
+            case 'map':
+              this.navigateToMap();
+              break;
+            case 'list':
+              this.navigateToList();
+              break;
+            case 'nationwide':
+              this.navigateToNationwide();
+              break;
+            case 'suggest':
+              this.navigateToSuggest();
+              break;
+            case 'shop':
+              utilsModule.openUrl('https://www.coeliacsanctuary.co.uk/shop');
+              break;
+            case 'website':
+              utilsModule.openUrl('https://www.coeliacsanctuary.co.uk');
+              break;
+            case 'about':
+              this.navigateToAbout();
+              break;
+          }
+        });
+      }
     },
 
     navigateToMap() {
-      this.$navigateTo(Map);
+      this.$navigateTo(Map, {
+        backstackVisible: false
+      });
     },
 
     navigateToList() {
-      this.$navigateTo(List);
+      this.$navigateTo(List, {
+        backstackVisible: false
+      });
     },
 
     navigateToNationwide() {
-      this.$navigateTo(Nationwide);
+      this.$navigateTo(Nationwide, {
+        backstackVisible: false
+      });
     },
 
     navigateToSuggest() {
-      this.$navigateTo(SuggestPlace);
+      this.$navigateTo(SuggestPlace, {
+        backstackVisible: false
+      });
     },
 
     navigateToAbout() {
-      this.$navigateTo(About);
+      this.$navigateTo(About, {
+        backstackVisible: false
+      });
     }
   }
 }
