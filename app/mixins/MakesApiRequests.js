@@ -2,7 +2,7 @@ import axios from "axios";
 
 export default {
     data: () => ({
-        apiRoot: 'https://develop.coeliacsanctuary.co.uk/api',
+        apiRoot: 'https://www.coeliacsanctuary.co.uk/api',
     }),
 
     methods: {

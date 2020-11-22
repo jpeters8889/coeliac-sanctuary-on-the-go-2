@@ -11,7 +11,7 @@ export default {
             firebase.analytics.logEvent({
                 key: key,
                 parameters: params
-            });
+            }).then().catch();
         },
 
         pushScreenView(screen, additionalParams = []) {

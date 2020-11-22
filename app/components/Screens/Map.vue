@@ -3,7 +3,7 @@
     <AppHeading title="Map of Places" can-go-back/>
 
     <FlexboxLayout flexDirection="column" justifyContent="space-between">
-      <SearchBar v-model="search.term" @submit="runSearch()" @loaded="searchLoaded($event)" flexShrink="0"/>
+      <SearchBar v-model="search.term" @submit="runSearch()" @loaded="searchLoaded($event)" flexShrink="0" ref="searchBar"/>
 
       <template v-if="loading">
         <ActivityIndicator :busy="true" width="100" height="100"></ActivityIndicator>
@@ -97,7 +97,7 @@ export default {
       });
     },
 
-    getPlaces() {
+    getPlaces(then = null) {
       this.apiSearchPlaces(this.search, {venueType: this.getFilters()}, 1, 50).then((response) => {
         this.totalPages = response.data.data.last_page;
 
@@ -112,6 +112,13 @@ export default {
         });
 
         this.placesLoaded();
+
+        if(this.search.lat === 0 && response.data.data.appends.latlng) {
+          this.search.lat = response.data.data.appends.latlng.lat;
+          this.search.lng = response.data.data.appends.latlng.lng;
+        }
+
+        this.loading = false;
       });
     },
 
@@ -209,7 +216,11 @@ export default {
     },
 
     runSearch() {
+      this.$refs.searchBar.nativeView.dismissSoftInput();
+
       if (this.search.term !== '') {
+        this.loading = true;
+
         this.search.lat = 0;
         this.search.lng = 0;
       }
@@ -219,6 +230,8 @@ export default {
       if (this.mapView) {
         this.mapView.removeAllMarkers();
       }
+
+      this.getPlaces();
 
       this.logAnalyticEvent('loaded_eateries', [
         {
@@ -234,14 +247,14 @@ export default {
           value: this.search.term,
         }
       ])
-
-      this.getPlaces();
     },
 
     searchLoaded($event) {
       if ($event.object.android) {
         $event.object.android.clearFocus();
       }
+
+      this.$refs.searchBar.nativeView.dismissSoftInput();
     },
 
     goToCurrentLocation() {

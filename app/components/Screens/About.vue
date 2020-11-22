@@ -45,7 +45,7 @@
           <Label :textWrap="true" text="I consent to anonymous usage reports."></Label>
         </FlexboxLayout>
 
-        <Label class="small" :textWrap="true" text="App Version 2.0.0 Alpha, published 20th September 2020"></Label>
+        <Label class="small" :textWrap="true" text="App Version 2.0.1, published 22nd November 2020"></Label>
       </StackLayout>
     </ScrollView>
   </Page>
