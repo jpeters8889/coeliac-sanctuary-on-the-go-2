@@ -16,9 +16,7 @@ export default {
 
             url += `&page=${page}&limit=${limit}`;
 
-            console.log(url);
-
-            return axios.get(url);
+            return axios.get(encodeURI(url));
         },
 
         apiGetNationwidePlaces(page = 1, limit = 20) {

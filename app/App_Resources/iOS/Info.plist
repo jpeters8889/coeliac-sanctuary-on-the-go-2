@@ -2,8 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-      <key>GADApplicationIdentifier</key>
-      <string>ca-app-pub-1063051842575021~3318227595</string>
+    <key>GADApplicationIdentifier</key>
+    <string>ca-app-pub-1063051842575021~3318227595</string>
 
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
@@ -50,5 +50,26 @@
 	<string>UIStatusBarStyleLightContent</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+
+	<key>NSAppTransportSecurity</key>
+        <dict>
+            <key>NSExceptionDomains</key>
+                <dict>
+                    <key>www.coeliacsanctuary.co.uk</key>
+                    <dict>
+                        <key>NSIncludesSubdomains</key>
+                        <true/>
+                        <key>NSExceptionAllowsInsecureHTTPLoads</key>
+                        <true/>
+                        <key>NSExceptionRequiresForwardSecrecy</key>
+                        <false/>
+                    </dict>
+                </dict>
+            <key>NSAllowsLocalNetworking</key>
+            <true/>
+            <key>NSAllowsArbitraryLoads</key>
+                <true/>
+        </dict>
+
 </dict>
 </plist>

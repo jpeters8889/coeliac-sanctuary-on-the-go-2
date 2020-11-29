@@ -1,30 +1,41 @@
 <template>
-  <Page @loaded="loaded()">
-    <ScrollView>
-      <StackLayout orientation="vertical">
-        <template v-for="group in groups">
-          <template>
-            <FlexboxLayout justifyContent="space-between" class="parent">
-              <Label :flexGrow="1" :text="group.label" @tap="toggle(group)"></Label>
-              <label class="fas" v-if="group.filters.length > 0" :text="groupIcon(group) | fonticon" @tap="toggle(group)"></label>
-              <Switch v-else :flexShrink="0" class="selectAll" v-model="group.filters[0].selected" @tap="selectItem()"/>
-            </FlexboxLayout>
-          </template>
-          <template v-if="isExpanded(group)">
-            <FlexboxLayout justifyContent="space-between" class="child">
-              <Label :textWrap="true" :flexGrow="1" text="Select All"></Label>
-              <Switch :flexShrink="0" :checked="areAllItemsSelected(group)" class="selectAll" @tap="selectAll($event, group)" />
-            </FlexboxLayout>
-            <template v-for="filter in group.filters">
-              <FlexboxLayout justifyContent="space-between" class="child">
-                <Label :textWrap="true" :flexGrow="1" :text="filter.label" @tap="filter.selected = !filter.selected"></Label>
-                <Switch :flexShrink="0" v-model="filter.selected" @checkedChange="selectItem()"/>
+  <Page @loaded="loaded()" ios:class="ios">
+    <StackLayout>
+      <FlexboxLayout justifyContent="space-between" class="title">
+        <Label flexShrink="0" class="fas" :text="'fa-times' | fonticon" @tap="$modal.close()"></Label>
+        <Label flexGrow="1" text="Filter Selection"></Label>
+      </FlexboxLayout>
+
+      <ScrollView>
+        <StackLayout orientation="vertical">
+          <template v-for="group in groups">
+            <template>
+              <FlexboxLayout justifyContent="space-between" class="parent">
+                <Label :flexGrow="1" :text="group.label" @tap="toggle(group)"></Label>
+                <label class="fas" v-if="group.filters.length > 0" :text="groupIcon(group) | fonticon"
+                       @tap="toggle(group)"></label>
+                <Switch v-else :flexShrink="0" class="selectAll" v-model="group.filters[0].selected"
+                        @tap="selectItem()"/>
               </FlexboxLayout>
             </template>
+            <template v-if="isExpanded(group)">
+              <FlexboxLayout justifyContent="space-between" class="child">
+                <Label :textWrap="true" :flexGrow="1" text="Select All"></Label>
+                <Switch :flexShrink="0" :checked="areAllItemsSelected(group)" class="selectAll"
+                        @tap="selectAll($event, group)"/>
+              </FlexboxLayout>
+              <template v-for="filter in group.filters">
+                <FlexboxLayout justifyContent="space-between" class="child">
+                  <Label :textWrap="true" :flexGrow="1" :text="filter.label"
+                         @tap="filter.selected = !filter.selected"></Label>
+                  <Switch :flexShrink="0" v-model="filter.selected" @checkedChange="selectItem()"/>
+                </FlexboxLayout>
+              </template>
+            </template>
           </template>
-        </template>
-      </StackLayout>
-    </ScrollView>
+        </StackLayout>
+      </ScrollView>
+    </StackLayout>
   </Page>
 </template>
 
@@ -35,9 +46,9 @@ import DisplaysAd from "../../mixins/DisplaysAd";
 
 export default {
   mixins: [
-      FindsIndex,
-      HasAnalytics,
-      DisplaysAd,
+    FindsIndex,
+    HasAnalytics,
+    DisplaysAd,
   ],
 
   props: {
@@ -172,5 +183,9 @@ Switch.selectAll {
   border-bottom-width: 1;
   border-bottom-color: #bbb;
   background: #ddd;
+}
+
+.ios Switch {
+  margin: 5 0;
 }
 </style>

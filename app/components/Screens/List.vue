@@ -1,5 +1,5 @@
 <template>
-  <Page @loaded="loaded()">
+  <Page @loaded="loaded()" ios:class="ios">
     <AppHeading title="Place List" can-go-back/>
 
     <template v-if="!hasLoaded">
@@ -15,7 +15,7 @@
                     @loadMoreItems="loadMoreEateries($event)">
             <v-template>
               <FlexboxLayout flexDirection="row" class="eatery">
-                <StackLayout class="details">
+                <StackLayout class="details" :width="eateryWidth">
                   <Label :textWrap="true" class="title" :text="place.name + ' - ' + place.town.town"></Label>
                   <Label :textWrap="true" class="info" :text="placeInfo(place)"></Label>
                   <Label :textWrap="true" class="info" :text="place.address.replace(/\<br \/\>/g, ', ')"></Label>
@@ -61,6 +61,7 @@ import GetsLocation from "../../mixins/GetsLocation";
 import PlaceDetails from "../Modals/PlaceDetails";
 import HasAnalytics from "../../mixins/HasAnalytics";
 import DisplaysAd from "../../mixins/DisplaysAd";
+import {screen} from "tns-core-modules/platform/platform"
 
 export default {
   components: {AppHeading},
@@ -156,25 +157,17 @@ export default {
     getPlaces() {
       this.apiSearchPlaces(this.search, {venueType: this.getFilters()}, this.currentPage)
           .then((response) => {
-            this.totalPages = response.data.data.last_page;
+            if (this.currentPage === 1 && this.places.length > 0) {
+              return;
+            }
 
+            this.totalPages = response.data.data.last_page;
             let places = response.data.data.data;
 
-            //
-            // Object.keys(response.data.data.appends).forEach((id) => {
-            //   const index = this.places.findIndex((place) => {
-            //     console.log(place);
-            //     return place.id === id;
-            //   });
-            //   alert(index);
-            //   this.$set(this.places[index], 'distance', response.data.data.appends[id].distance);
-            // });
-
             this.places.push(...places);
-          })
-          .finally(() => {
-            this.hasLoaded = true;
-          })
+          }).finally(() => {
+        this.hasLoaded = true;
+      })
     },
 
     placeInfo(place) {
@@ -188,14 +181,15 @@ export default {
     },
 
     runSearch() {
+      this.hasLoaded = false;
+      this.currentPage = 1;
+      this.places = [];
+
       if (this.search.term !== '') {
         this.search.lat = 0;
         this.search.lng = 0;
       }
 
-      this.hasLoaded = false;
-      this.currentPage = 1;
-      this.places = [];
       this.getPlaces();
 
       this.logAnalyticEvent('ran-place-search', [
@@ -265,6 +259,12 @@ export default {
     }
   },
 
+  computed: {
+    eateryWidth() {
+      return screen.mainScreen.widthDIPs - 120;
+    }
+  },
+
   watch: {
     venueTypes: {
       deep: true,
@@ -296,20 +296,19 @@ SearchBar {
 }
 
 .eatery {
-  margin-bottom: 10;
+  padding-bottom: 10;
   display: flex;
   color: black;
+  background-color: #addaf9;
+  justify-content: space-between;
+  flex-wrap: nowrap;
 
   .details {
-    flex: 1;
-    flex-direction: column;
-
     .title, .info {
       padding: 10;
       margin: 0;
     }
 
-    ƒ
     .title {
       font-weight: bold;
       padding-bottom: 5;
@@ -352,6 +351,7 @@ SearchBar {
       text-align: center;
       margin-top: auto;
       flex-shrink: 1;
+      margin-right: 10;
     }
   }
 }
@@ -375,5 +375,35 @@ SearchBar {
   font-size: 20;
   padding-top: 30;
   flex-grow: 1;
+}
+
+.ios {
+  .eatery {
+    display: flex;
+    .details {
+      width: auto!important;
+      flex: auto;
+      border-width: 1;
+      border-color: red;
+    }
+
+    .buttons {
+      width: 120!important;
+    }
+  }
+
+  .bottomBar {
+    padding-bottom: 30;
+
+    Button {
+      background-color: #ddd;
+      color: #000;
+      padding: 10;
+      border-radius: 5;
+      line-height: 1;
+      margin: 5;
+      text-transform: capitalize;
+    }
+  }
 }
 </style>

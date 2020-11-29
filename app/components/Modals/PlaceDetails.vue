@@ -1,7 +1,8 @@
 <template>
-  <Page @loaded="loaded()">
+  <Page @loaded="loaded()"  ios:class="ios">
     <StackLayout>
       <FlexboxLayout justifyContent="space-between" class="title">
+        <Label flexShrink="0" class="fas" :text="'fa-times' | fonticon" @tap="$modal.close()"></Label>
         <Label flexGrow="1" :text="place.name"></Label>
         <Label flexShrink="0" class="fas" :text="'fa-ellipsis-v' | fonticon" @tap="openKebabMenu"></Label>
       </FlexboxLayout>
@@ -143,6 +144,7 @@ export default {
         props: {
           placeId: this.place.id,
         },
+        target: this,
       });
     },
 
@@ -151,6 +153,7 @@ export default {
         props: {
           placeId: this.place.id,
         },
+        target: this,
       });
     }
   }
@@ -209,5 +212,9 @@ Page {
 
 Button {
   background: #DBBC25;
+}
+
+.ios Button {
+  margin: 0 5;
 }
 </style>

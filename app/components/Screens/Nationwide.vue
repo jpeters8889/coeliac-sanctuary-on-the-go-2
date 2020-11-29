@@ -1,5 +1,5 @@
 <template>
-  <Page @loaded="loaded()">
+  <Page @loaded="loaded()" ios:class="ios">
     <AppHeading title="Nationwide Places" can-go-back/>
 
     <FlexboxLayout flexDirection="column">
@@ -177,5 +177,9 @@ ActivityIndicator {
     font-size: 18;
     font-weight: bold;
   }
+}
+
+.ios Listview {
+  margin-bottom: 40;
 }
 </style>

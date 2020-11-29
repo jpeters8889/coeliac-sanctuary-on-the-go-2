@@ -1,5 +1,5 @@
 <template>
-  <Page @loaded="loaded()">
+  <Page @loaded="loaded()"  ios:class="ios">
     <ScrollView>
       <StackLayout>
         <Label :text="'Please select your rating below'" :textWrap="true" class="title"></Label>
@@ -102,7 +102,7 @@ export default {
           position: nstoasts.POSITION.CENTER,
         });
 
-        // this.$modal.close();
+        this.$modal.close();
       }).catch((err) => {
         nstoasts.show({
           text: 'Sorry, there was a problem submitting your review and rating.',
@@ -168,5 +168,10 @@ Button {
 
 Button.cancel {
   background: #80CCFC;
+}
+
+.ios Button {
+  padding: 10;
+  border-radius: 5;
 }
 </style>
